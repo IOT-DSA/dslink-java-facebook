@@ -23,7 +23,6 @@ import org.vertx.java.core.json.JsonObject;
 
 import java.io.*;
 
-
 public class FacebookThing {
 	
 	private Node node;
@@ -31,7 +30,8 @@ public class FacebookThing {
 	private Facebook facebook;
 	private AccessToken accessToken;
 	private String userPath;
-	private static final String PERMISSIONS = "publish_actions, read_stream";
+	/* Add any necessary permissions here */
+	private static final String PERMISSIONS = "publish_actions, read_stream"; 
 	
 	private FacebookThing(Node node) {
 		this.node = node;
@@ -48,7 +48,7 @@ public class FacebookThing {
 		cb.setDebugEnabled(true)
 		.setOAuthAppId("1625793730970939")
 		.setOAuthAppSecret("023a35e161c4187af323eef166bc8e16")
-		.setOAuthPermissions(PERMISSIONS) // Add any necessary permissions here.
+		.setOAuthPermissions(PERMISSIONS)
 		.setJSONStoreEnabled(true);
 		err = node.createChild("errors").build();
 		facebook = new FacebookFactory(cb.build()).getInstance();		
@@ -102,8 +102,8 @@ public class FacebookThing {
 	private class AuthHandler implements Handler<ActionResult> {
 		public void handle(ActionResult event) {
 			String urlstring = event.getParameter("redirectUrl", ValueType.STRING).getString();
-			String accessTokenString = urlstring.split("access_token=")[1].split("[/?&]")[0];
-			long expires = Long.parseLong(urlstring.split("expires_in=")[1].split("[/?&]")[0]);
+			String accessTokenString = urlstring.split("access_token=")[1].split("[/?&;]")[0];
+			long expires = Long.parseLong(urlstring.split("expires_in=")[1].split("[/?&;]")[0]);
 			accessToken = new AccessToken(accessTokenString, expires);
 			saveAccessToken(new File(userPath, "accessToken.ser"));
 			node.removeChild("Authorize");
