@@ -31,6 +31,7 @@ public class FacebookThing {
 	private Facebook facebook;
 	private AccessToken accessToken;
 	private String userPath;
+	private static final String PERMISSIONS = "publish_actions, read_stream";
 	
 	private FacebookThing(Node node) {
 		this.node = node;
@@ -47,7 +48,7 @@ public class FacebookThing {
 		cb.setDebugEnabled(true)
 		.setOAuthAppId("1625793730970939")
 		.setOAuthAppSecret("023a35e161c4187af323eef166bc8e16")
-		.setOAuthPermissions("publish_actions, read_stream")
+		.setOAuthPermissions(PERMISSIONS) // Add any necessary permissions here.
 		.setJSONStoreEnabled(true);
 		err = node.createChild("errors").build();
 		facebook = new FacebookFactory(cb.build()).getInstance();		
@@ -61,8 +62,8 @@ public class FacebookThing {
 		public void handle(ActionResult event) {
 			
 			String username = event.getParameter("username", ValueType.STRING).getString();
-			userPath = "C:/dgfacebot/userdata/"+username;
-			File userFile = new File(userPath);
+			File userFile = new File(System.getProperty("user.home"), "dgfacebot/userdata/"+username);
+			userPath = userFile.getPath();
 
 			if (!userFile.exists()) {
 				userFile.setWritable(true);
@@ -70,7 +71,7 @@ public class FacebookThing {
 					System.out.println("made a user dir");
 				}
 			} else {
-				File tokenFile = new File(userPath+"/accessToken.ser");
+				File tokenFile = new File(userPath, "accessToken.ser");
 				loadAccessToken(tokenFile);
 			}
 			NodeBuilder builder = node.createChild("logout");
@@ -104,7 +105,7 @@ public class FacebookThing {
 			String accessTokenString = urlstring.split("access_token=")[1].split("[/?&]")[0];
 			long expires = Long.parseLong(urlstring.split("expires_in=")[1].split("[/?&]")[0]);
 			accessToken = new AccessToken(accessTokenString, expires);
-			saveAccessToken(new File(userPath+"/accessToken.ser"));
+			saveAccessToken(new File(userPath, "accessToken.ser"));
 			node.removeChild("Authorize");
 			connect();	
 		}

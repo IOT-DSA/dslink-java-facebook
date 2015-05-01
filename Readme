@@ -1,5 +1,10 @@
 Login Instructions:
 
+Since the app is currently in development mode, I (Daniel Shapiro) will need to add you as a
+developer or tester before you can use it with your facebook account. Send me an email if you want
+me to do so. Alternatively, use the test account: 
+		      email is open_tqggimr_user@tfbnw.net, password is the same as the one for dgLux.
+
 To login for the first time, invoke the "login" action of the node "facebook" with any username.
 This will create an "Authentication URL" node. Go to the url specified by that node's value, login
  with facebook, and grant the app permissions. You should be redirected to a url that looks
@@ -10,4 +15,13 @@ The "facebook" node should now have several useful actions you can invoke.
  
  On subsequent logins, just invoke the "login" action with the same username you used previously.
  
-  
+ Notes:
+ 
+ The RawAPICall Action allows you to make any calls to facebook's Graph API, as outlined here: 
+ https://developers.facebook.com/docs/graph-api/using-graph-api/v2.3
+ The 'type' parameter should be either 'GET', 'POST', or 'DELETE', and the 'query' parameter should
+ be the actual API call.
+ Most API calls, however, will require permissions, not all of which are being asked for by the app
+ at this time. Permissions are outlined here: https://developers.facebook.com/docs/facebook-login/permissions/v2.3
+ The permissions that the app asks for can be edited by changing the field
+ private static final String PERMISSIONS of the class FacebookThing.
