@@ -317,12 +317,13 @@ public class FacebookThing {
 			Integer distance = null;
 			GeoLocation center = null;
 			if (type == SearchType.PLACE) {
-                vt = ValueType.NUMBER;
-				Number lati = event.getParameter("center latitude", vt).getNumber();
-				Number longi = event.getParameter("center longitude", vt).getNumber();
-				if (lati != null && longi != null) center = new GeoLocation(lati.doubleValue(), longi.doubleValue());
-				Number dist = event.getParameter("distance", vt).getNumber();
-				if (dist != null) distance = dist.intValue();
+				Value lati = event.getParameter("center latitude");
+				Value longi = event.getParameter("center longitude");
+				if (lati != null && longi != null) {
+					center = new GeoLocation(lati.getNumber().doubleValue(), longi.getNumber().doubleValue());
+				}
+				Value dist = event.getParameter("distance");
+				if (dist != null) distance = dist.getNumber().intValue();
 			}
 			String raw = doSearch(type, query, center, distance);
 			Node sr = node.getChild("SearchResults");
