@@ -17,6 +17,8 @@ import org.dsa.iot.dslink.node.actions.ActionResult;
 import org.dsa.iot.dslink.node.actions.Parameter;
 import org.dsa.iot.dslink.node.value.Value;
 import org.dsa.iot.dslink.node.value.ValueType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.vertx.java.core.Handler;
 import org.vertx.java.core.json.DecodeException;
 import org.vertx.java.core.json.JsonObject;
@@ -24,6 +26,11 @@ import org.vertx.java.core.json.JsonObject;
 import java.io.*;
 
 public class FacebookThing {
+	private static final Logger LOGGER;
+	
+	static {
+		LOGGER = LoggerFactory.getLogger(FacebookThing.class);
+	}
 	
 	private Node node;
 	private Node err;
@@ -68,7 +75,7 @@ public class FacebookThing {
 			if (!userFile.exists()) {
 				userFile.setWritable(true);
 				if (userFile.mkdirs()) {
-					System.out.println("made a user dir");
+					LOGGER.debug("made a user dir");
 				}
 			} else {
 				File tokenFile = new File(userPath, "accessToken.ser");
@@ -151,7 +158,7 @@ public class FacebookThing {
 			try {
 				facebook.postStatusMessage(statusText);
 			} catch (FacebookException e) {
-				e.printStackTrace();
+				LOGGER.debug("error", e);
 				accountDelete();
 				NodeBuilder builder = err.createChild("fb error message");
 				builder.setValue(new Value("Facebook error has occured. Logging out and deleting user data. Please login and reauthorize"));
@@ -170,7 +177,7 @@ public class FacebookThing {
 				builder.build();
 				
 			} catch (FacebookException e) {
-				e.printStackTrace();
+				LOGGER.debug("error", e);
 				accountDelete();
 				NodeBuilder builder = err.createChild("fb error message");
 				builder.setValue(new Value("Facebook error has occured. Logging out and deleting user data. Please login and reauthorize"));
@@ -189,7 +196,7 @@ public class FacebookThing {
 				builder.build();	
 				
 			} catch (FacebookException e) {
-				e.printStackTrace();
+				LOGGER.debug("error", e);
 				accountDelete();
 				NodeBuilder builder = err.createChild("fb error message");
 				builder.setValue(new Value("Facebook error has occured. Logging out and deleting user data. Please login and reauthorize"));
@@ -217,7 +224,7 @@ public class FacebookThing {
 						break;
 			}
 		} catch (FacebookException e) {
-			e.printStackTrace();
+			LOGGER.debug("error", e);
 			accountDelete();
 			NodeBuilder builder = err.createChild("fb error message");
 			builder.setValue(new Value("Facebook error has occured. Logging out and deleting user data. Please login and reauthorize"));
@@ -258,7 +265,7 @@ public class FacebookThing {
 				result = res.asString();
 			}
 		} catch (FacebookException e) {
-			e.printStackTrace();
+			LOGGER.debug("error", e);;
 			if (e.getErrorType().equals("OAuthException")) {
 				accountDelete();
 				NodeBuilder builder = err.createChild("oauth error message");
@@ -392,7 +399,7 @@ public class FacebookThing {
             objectOut.close();
         } catch (IOException e) {
             String msg = "IOException while saving accessToken.";
-            System.out.println(msg);
+            LOGGER.error(msg);
         }
 	}
 	
@@ -405,10 +412,10 @@ public class FacebookThing {
                 objectIn.close();
             } catch (IOException e) {
                 String msg = "IOException while loading accessToken.";
-                System.out.println(msg);
+                LOGGER.error(msg);
             } catch (ClassNotFoundException e) {
                 String msg = "ClassNotFoundException while loading accessToken.";
-                System.out.println(msg);
+                LOGGER.error(msg);
             }
         }
 	}
