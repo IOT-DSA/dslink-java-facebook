@@ -23,7 +23,7 @@ public class Main extends DSLinkHandler {
 			}
 		}
 		//args = new String[] { "-b", "http://localhost:8080/conn" };
-		DSLinkFactory.startResponder("fbResponder", args, new Main());
+		DSLinkFactory.startResponder("facebook", args, new Main());
 	}
 	
 	@Override
