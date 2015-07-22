@@ -18,10 +18,9 @@ interacting with facebook's Graph API (Search, Update Status, etc.)
  Notes:
  
  The RawAPICall Action allows you to make any calls to facebook's Graph API, as outlined here: 
- https://developers.facebook.com/docs/graph-api/using-graph-api/v2.3
- The 'type' parameter should be either 'GET', 'POST', or 'DELETE', and the 'query' parameter should
- be the actual API call. Most API calls, however, will require specific permissions. 
- Permissions are outlined here: https://developers.facebook.com/docs/facebook-login/permissions/v2.3
+ https://developers.facebook.com/docs/graph-api/using-graph-api/v2.3 . The 'type' parameter should be either 'GET', 'POST', or 'DELETE', and the 'query' parameter should be the actual API call. Most API calls, however, will require specific permissions. 
+ 
+ Permissions are outlined here: https://developers.facebook.com/docs/facebook-login/permissions/v2.3 .
  The "permissions" parameter of the actions for adding/editing connections allows you to select which permissions
  the app asks for during authentication.
  
