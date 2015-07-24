@@ -1,6 +1,6 @@
 {
   "name": "dslink-java-facebook",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "A dslink for facebook",
   "license": "Apache",
   "main": "bin/dslink-java-facebook",
@@ -16,6 +16,10 @@
     "url": "https://github.com/IOT-DSA/dslink-java-facebook/issues"
   },
   "configs": {
+  	"name": {
+      "type": "string",
+      "default": "facebook"
+    },
     "broker": {
       "type": "url"
     },
@@ -30,6 +34,10 @@
     "log": {
       "type": "enum",
       "default": "info"
+    },
+    "handler_class": {
+      "type": "string",
+      "default": "facebook.Main"
     }
   }
 }

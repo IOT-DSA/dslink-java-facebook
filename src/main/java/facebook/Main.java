@@ -18,7 +18,12 @@ public class Main extends DSLinkHandler {
 	public static void main(String[] args) {
 		
 		//args = new String[] { "-b", "http://localhost:8080/conn" };
-		DSLinkFactory.startResponder("facebook", args, new Main());
+		DSLinkFactory.start(args, new Main());
+	}
+	
+	@Override
+	public boolean isResponder() {
+		return true;
 	}
 	
 	@Override
